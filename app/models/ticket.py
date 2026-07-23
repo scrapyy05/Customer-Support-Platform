@@ -40,4 +40,3 @@ class Ticket(Base, TimestampMixin):
     assigned_agent = relationship("User", foreign_keys=[assigned_agent_id], back_populates="assigned_tickets")
     messages = relationship("TicketMessage", back_populates="ticket", cascade="all, delete-orphan", order_by="TicketMessage.created_at")
     history_logs = relationship("TicketHistory", back_populates="ticket", cascade="all, delete-orphan", order_by="TicketHistory.changed_at")
-    attachments = relationship("Attachment", back_populates="ticket", cascade="all, delete-orphan")

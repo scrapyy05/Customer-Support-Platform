@@ -9,7 +9,8 @@ from sqlalchemy.orm import selectinload
 
 from app.models.user import User, UserRole
 from app.models.ticket import TicketStatus
-from app.models.message import TicketMessage, Attachment
+from app.models.message import TicketMessage
+from app.models.attachment import Attachment
 from app.schemas.message import MessageCreate
 from app.services.ticket_service import TicketService
 

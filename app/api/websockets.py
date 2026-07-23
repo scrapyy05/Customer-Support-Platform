@@ -2,7 +2,7 @@ import uuid
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import async_session_maker
+from app.core.database import AsyncSessionLocal
 from app.auth.jwt import decode_token
 from app.models.user import User, UserRole
 from sqlalchemy import select
@@ -21,7 +21,7 @@ async def get_user_from_token(token: str) -> User:
     if not user_id_str:
         raise ValueError("Invalid token")
         
-    async with async_session_maker() as db:
+    async with AsyncSessionLocal() as db:
         query = select(User).where(User.id == uuid.UUID(user_id_str))
         result = await db.execute(query)
         user = result.scalar_one_or_none()
@@ -48,7 +48,7 @@ async def websocket_endpoint(
 
     # Verify access to the ticket
     try:
-        async with async_session_maker() as db:
+        async with AsyncSessionLocal() as db:
             await TicketService.get_ticket_by_id(db, id, user)
     except Exception:
         await websocket.close(code=1008)
