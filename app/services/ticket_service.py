@@ -13,6 +13,7 @@ from app.schemas.ticket import TicketCreate, TicketUpdate, TicketRead
 from app.services.cache_service import CacheService
 from app.core.config import settings
 import json
+from app.worker.tasks import task_categorize_ticket
 
 
 class TicketService:
@@ -32,6 +33,10 @@ class TicketService:
         db.add(new_ticket)
         await db.commit()
         await db.refresh(new_ticket)
+        
+        # Trigger background categorization task
+        task_categorize_ticket.delay(str(new_ticket.id))
+        
         return new_ticket
 
     @staticmethod

@@ -6,7 +6,7 @@ from sqlalchemy import text
 
 from app.core.config import settings
 from app.core.database import get_db
-from app.api import auth, users, tickets, messages, websockets
+from app.api import auth, users, tickets, messages, websockets, ai
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -29,6 +29,7 @@ app.include_router(users.router, prefix="/users", tags=["User Management"])
 app.include_router(tickets.router, prefix="/tickets", tags=["Ticket Management"])
 app.include_router(messages.router, prefix="/messages", tags=["Messages & Attachments"])
 app.include_router(websockets.router, prefix="/ws", tags=["Real-time WebSockets"])
+app.include_router(ai.router, prefix="/ai", tags=["AI Intelligence"])
 
 
 @app.get(
